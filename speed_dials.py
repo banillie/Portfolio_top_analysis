@@ -1,4 +1,4 @@
-from openpyxl import load_workbook, Workbook
+
 from bcompiler.utils import project_data_from_master
 import docx
 
@@ -278,8 +278,10 @@ def calculating_dials_other(dictionary):
     print(result)
 
 
-current_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\master_3_2018.xlsx')
-last_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\master_4_2017.xlsx')
+current_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\core data\\merged_master_'
+                                          'testing.xlsx')
+
+last_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_2_2018.xlsx')
 
 current_Q_list = get_project_names(current_Q_dict)
 
@@ -298,11 +300,11 @@ print('Benefits')
 calculating_dials_other(benefits_dca)
 
 overall = printing_word(sro_dca)
-#finance = printing_word(finance_dca)
-#resource = printing_word(resource_dca)
-#benefits = printing_word(benefits_dca)
+finance = printing_word(finance_dca)
+resource = printing_word(resource_dca)
+benefits = printing_word(benefits_dca)
 
-overall.save('C:\\Users\\Standalone\\Will\\since_Q4_1718_overall_dca.docx')
-#finance.save('C:\\Users\\Standalone\\Will\\Q3_1819_finance_dca.docx')
-#resource.save('C:\\Users\\Standalone\\Will\\Q3_1819_resource_dca.docx')
-#benefits.save('C:\\Users\\Standalone\\Will\\Q3_1819_benefits_dca.docx')
+overall.save('C:\\Users\\Standalone\\Will\\Q3_1718_overall_dca.docx')
+finance.save('C:\\Users\\Standalone\\Will\\Q3_1819_finance_dca.docx')
+resource.save('C:\\Users\\Standalone\\Will\\Q3_1819_resource_dca.docx')
+benefits.save('C:\\Users\\Standalone\\Will\\Q3_1819_benefits_dca.docx')
