@@ -1,3 +1,17 @@
+'''Programme produces outputs (figures) for building the speeddials page
+
+outputs:
+programme prints out high level numbers for speeddials
+overall SRO DCA changes between quarters - in MS word. Typically current and last. But can be adapted to whichever two
+quarters are of interest
+overall SRO finance confidence changes between quarters - as above
+overall SRO benefits confidence changes between quarters - as above
+overall SRO resource confidence changes between quarters - as above
+
+Operating requirements:
+1) Specify file path to core data sets of interest.
+2) specify file path and file name for output MS word documents. '''
+
 
 from bcompiler.utils import project_data_from_master
 import docx
@@ -278,6 +292,8 @@ def calculating_dials_other(dictionary):
     print(result)
 
 
+# 1) Specify file path to core data sets of interest.
+
 current_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\core data\\merged_master_'
                                           'testing.xlsx')
 
@@ -304,6 +320,7 @@ finance = printing_word(finance_dca)
 resource = printing_word(resource_dca)
 benefits = printing_word(benefits_dca)
 
+# 2) specify file path and file name for output MS word documents.
 overall.save('C:\\Users\\Standalone\\Will\\Q3_1718_overall_dca.docx')
 finance.save('C:\\Users\\Standalone\\Will\\Q3_1819_finance_dca.docx')
 resource.save('C:\\Users\\Standalone\\Will\\Q3_1819_resource_dca.docx')
