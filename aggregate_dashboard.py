@@ -1,9 +1,31 @@
-'''programme for creating an aggregate project dashboard
+'''
+
+Programme for creating an aggregate project dashboard
 
 input documents:
+1) Dashboard master document - this is an excel file. It should have the dashboard design, with all projects structured
+in the correct way (order etc), but all data fields left blank. If project data is not being put into the correct
+part of the master, ensure that the project name is consistent in master data and this document. The names need to be
+exactly the same for information to be released.
+2) Master data for two quarters - this will usually be latest and previous quarter
+
+output document:
+3) Dashboard with all project data placed into dashboard and formatted correctly.
+
+Instructions:
+1) provide path to dashboard master
+2) provide path to master data sets
+3) provide path and specify file name for output document
+
+Supplementary instructions:
+These things need to be done to check and assure the data going into the dashboard. Use the seperate programme available
+for undertaking these tasks.
+1) Check that project stage/last at BICC data is correct
+2) Check the last at / next at BICC project data is correct.
+3) Make sure IPA DCA ratings are correct.
 
 
-problem at the moment re total forecast key - which is currently missing'''
+'''
 
 from openpyxl import load_workbook
 from bcompiler.utils import project_data_from_master
@@ -402,4 +424,4 @@ wb = placing_excel(d3, d2)
 
 # 3) provide file path and specific name of output file.
 wb.save(
-    'C:\\Users\\Standalone\\Will\\testing_dashboard_Q3_2018_19.xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q3_2018\\testing_dashboard_Q3_2018_19.xlsx')
