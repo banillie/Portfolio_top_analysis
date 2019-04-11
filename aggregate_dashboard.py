@@ -1,13 +1,18 @@
-from openpyxl import load_workbook, Workbook
+'''programme for creating an aggregate project dashboard
+
+input documents:
+
+
+problem at the moment re total forecast key - which is currently missing'''
+
+from openpyxl import load_workbook
 from bcompiler.utils import project_data_from_master
 import datetime
-from openpyxl.styles import Color, PatternFill, Font, Border
+from openpyxl.styles import PatternFill, Font
 from openpyxl.styles.differential import DifferentialStyle
-from openpyxl.formatting.rule import ColorScaleRule, CellIsRule, FormulaRule, Rule, IconSet, FormatObject
+from openpyxl.formatting.rule import Rule, IconSet, FormatObject
 
 '''function for putting keys of interest plus values into a list'''
-
-
 def key_of_interest(project_name, data, key):
     data = data[project_name]
     cell_keys = key
@@ -19,8 +24,6 @@ def key_of_interest(project_name, data, key):
 
 
 '''function for converting dates into concatenated written time periods'''
-
-
 def concatenate_dates(date):
     today = datetime.datetime(2019, 2,
                               4)  # this needs to be the date the report is being discussed at BICC. Python date format (YYYY,MM,DD)
@@ -126,8 +129,6 @@ def concatenate_dates(date):
 
 
 '''function for calculating if confidence has increased decreased'''
-
-
 def up_or_down(name, dict_1, dict_2):
     conf_1 = dict_1[name][0][1]
     # print(conf_1)
@@ -164,8 +165,6 @@ def up_or_down(name, dict_1, dict_2):
 
 
 '''function for list/dictionary for current quarter'''
-
-
 def making_dict(names):
     d = {}
     for x in names:
@@ -176,12 +175,10 @@ def making_dict(names):
 
 '''function for adding concatenated word strings to dictionary.
 note probably don't need the above function now, but can tidy up later'''
-
-
 def adding_con(d, d2):
     new_dic = {}
     for x in d:
-        print(x)
+        #print(x)
         be = key_of_interest(x, data_current_quarter, to_capture_current_quarter)
         lis = []
         for i in range(1, 5):
@@ -202,8 +199,6 @@ def adding_con(d, d2):
 
 
 '''function for list/dictionary for previous quarter'''
-
-
 def making_dict_lq(names):
     d2 = {}
     for x in names:
@@ -216,25 +211,23 @@ def making_dict_lq(names):
 
 
 '''function that places all information into the summary dashboard sheet'''
-
-
 def placing_excel(d, d2):
     # loop through list/dictionary and place in correct place in DASHBOARD worksheet
 
     for row_num in range(2, ws.max_row + 1):
         project_name = ws.cell(row=row_num, column=3).value
-        # print(project_name)
+        print(project_name)
         if project_name in d:
-            ws.cell(row=row_num, column=4).value = d[project_name][8][1]
+            ws.cell(row=row_num, column=4).value = d[project_name][12][1]
             ws.cell(row=row_num, column=6).value = d[project_name][17][1]
             ws.cell(row=row_num, column=7).value = d[project_name][0][1]
-            ws.cell(row=row_num, column=8).value = d[project_name][12][1]
-            ws.cell(row=row_num, column=9).value = d[project_name][7][1]
-            ws.cell(row=row_num, column=10).value = d[project_name][15][1]
-            ws.cell(row=row_num, column=11).value = d[project_name][16][1]
-            ws.cell(row=row_num, column=12).value = d[project_name][6][1]
-            ws.cell(row=row_num, column=13).value = d[project_name][13][1]
-            ws.cell(row=row_num, column=14).value = d[project_name][14][1]
+            ws.cell(row=row_num, column=8).value = d[project_name][13][1]
+            ws.cell(row=row_num, column=9).value = d[project_name][8][1]
+            ws.cell(row=row_num, column=10).value = d[project_name][14][1]
+            ws.cell(row=row_num, column=11).value = d[project_name][15][1]
+            ws.cell(row=row_num, column=12).value = d[project_name][7][1]
+            ws.cell(row=row_num, column=13).value = d[project_name][4][1]
+            ws.cell(row=row_num, column=14).value = d[project_name][5][1]
             # dash_sheet.cell(row=row_num, column=27).value = d[project_name][9][1]
             # dash_sheet.cell(row=row_num, column=28).value = d[project_name][1][1]
             # dash_sheet.cell(row=row_num, column=33).value = d[project_name][2][1]
@@ -243,7 +236,7 @@ def placing_excel(d, d2):
             # dash_sheet.cell(row=row_num, column=32).value = d[project_name][13][1]
             # dash_sheet.cell(row=row_num, column=37).value = d[project_name][14][1]
 
-        if project_name == 'High Speed Rail Programme (HS2)':
+        if project_name == 'High Speed Rail Programme (HS2)':    #TODO should remove this hardcode
             ws.cell(row=row_num, column=13).value = 'often'
             ws.cell(row=row_num, column=14).value = 'often'
 
@@ -384,14 +377,16 @@ to_capture_current_quarter = ['Total Forecast', 'Departmental DCA', 'GMPP - IPA 
 '''key of interest for previous quarter'''
 to_capture_previous_quarter = ['Departmental DCA']
 
-'''load into memory the blank dashboard document'''
+# 1) Provide file path to empty dashboard document
 wb = load_workbook(
     'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q3_2018\\dashboard master_Q3_1819.xlsx')
 ws = wb.active
 
-'''load master data - current and previous quarters'''
-data_current_quarter = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\master_3_2018.xlsx')
-data_previous_quarter = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\master_2_2018.xlsx')
+# 2) Provide file path to master data sets
+data_current_quarter = project_data_from_master(
+    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\merged_master_testing.xlsx')
+data_previous_quarter = project_data_from_master(
+    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_2_2018.xlsx')
 
 '''get list of project names'''
 names = list(data_current_quarter.keys())
@@ -404,4 +399,7 @@ d3 = adding_con(d, d2)
 
 '''command for running the programme'''
 wb = placing_excel(d3, d2)
-wb.save('C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q3_2018\\dashboard_Q3_2018_19.xlsx')
+
+# 3) provide file path and specific name of output file.
+wb.save(
+    'C:\\Users\\Standalone\\Will\\testing_dashboard_Q3_2018_19.xlsx')
