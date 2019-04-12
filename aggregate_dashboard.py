@@ -4,8 +4,8 @@ Programme for creating an aggregate project dashboard
 
 input documents:
 1) Dashboard master document - this is an excel file. It should have the dashboard design, with all projects structured
-in the correct way (order etc), but all data fields left blank. If project data is not being put into the correct
-part of the master, ensure that the project name is consistent in master data and this document. The names need to be
+in the correct way (order), but all data fields left blank. Note if project data does not get placed into the correct
+part of the master, check that the project name is consistent with the name in master data. The names need to be
 exactly the same for information to be released.
 2) Master data for two quarters - this will usually be latest and previous quarter
 
@@ -18,11 +18,14 @@ Instructions:
 3) provide path and specify file name for output document
 
 Supplementary instructions:
-These things need to be done to check and assure the data going into the dashboard. Use the seperate programme available
+These things need to be done to check and assure the data going into the dashboard. Use the other programmes available
 for undertaking these tasks.
-1) Check that project stage/last at BICC data is correct
-2) Check the last at / next at BICC project data is correct.
-3) Make sure IPA DCA ratings are correct.
+1) Check that project stage/last at BICC data is correct #TODO need to check how this has been effected by move to new
+template.
+2) Check the last at / next at BICC project data is correct. #TODO need to check how this has been effected by move to
+new template.
+3) Make sure IPA DCA ratings are correct. #TODO need to check how this has been effected by move to new
+template.
 
 
 '''
