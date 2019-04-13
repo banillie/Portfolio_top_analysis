@@ -20,7 +20,8 @@ Instructions:
 Supplementary instructions:
 These things need to be done to check and assure the data going into the dashboard. Use the other programmes available
 for undertaking these tasks.
-1) Check that project stage/last at BICC data is correct #TODO check if process needs to be amended for Q1 19/20
+1) Check that project stage/last at BICC data is correct. This is done via the bc_stage_from_master and
+bc_amended_to_master programmes. #TODO check if process needs to be amended for Q1 19/20
 2) Check the last at / next at BICC project data is correct. This is done via the bicc_dates_from_master and
 bicc_dates_amended_to_master programmes. #TODO check if process needs to be amended for Q1 19/20
 3) Make sure IPA DCA ratings are correct. This is done via the gmpp_dca_information and gmpp_dca_to_dft_master
