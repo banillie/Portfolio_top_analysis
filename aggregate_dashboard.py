@@ -20,13 +20,14 @@ Instructions:
 Supplementary instructions:
 These things need to be done to check and assure the data going into the dashboard. Use the other programmes available
 for undertaking these tasks.
-1) Check that project stage/last at BICC data is correct #TODO need to check how this has been effected by move to new
-template.
-2) Check the last at / next at BICC project data is correct. #TODO need to check how this has been effected by move to
-new template.
-3) Make sure IPA DCA ratings are correct. #TODO need to check how this has been effected by move to new
-template.
+1) Check that project stage/last at BICC data is correct #TODO check if process needs to be amended for Q1 19/20
+2) Check the last at / next at BICC project data is correct. #TODO check if process needs to be amended for Q1 19/20
+3) Make sure IPA DCA ratings are correct. This is done via the gmpp_dca_information and gmpp_dca_to_dft_master
+programmes. #TODO need to check if these programmes needs to be amended for Q1 19/20
 
+Note some manual adjustments may need to be made to:
+1) Project WLC totals e.g. Hs2 Phases
+2) The last/next at BICC specification. e.g. Hs2 Prog should be changed to 'often'
 
 '''
 
@@ -260,10 +261,6 @@ def placing_excel(d, d2):
             # dash_sheet.cell(row=row_num, column=23).value = d[project_name][16][1]
             # dash_sheet.cell(row=row_num, column=32).value = d[project_name][13][1]
             # dash_sheet.cell(row=row_num, column=37).value = d[project_name][14][1]
-
-        if project_name == 'High Speed Rail Programme (HS2)':    #TODO should remove this hardcode
-            ws.cell(row=row_num, column=13).value = 'often'
-            ws.cell(row=row_num, column=14).value = 'often'
 
     for row_num in range(2, ws.max_row + 1):
         project_name = ws.cell(row=row_num, column=3).value
