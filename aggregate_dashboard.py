@@ -40,21 +40,29 @@ from openpyxl.styles import PatternFill, Font
 from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.formatting.rule import Rule, IconSet, FormatObject
 
-'''function for putting keys of interest plus values into a list'''
-def key_of_interest(project_name, data, key):
-    data = data[project_name]
-    cell_keys = key
-    output_list = []
-    for item in data.items():
-        if item[0] in cell_keys:
-            output_list.append(item)
-    return output_list
+'''Function that creates dictionary with keys of interest'''
+def inital_dict(project_name, data, key_list):
+    upper_dictionary = {}
+    for name in project_name:
+        lower_dictionary = {}
 
+        try:
+            p_data = data[name]
+
+            for value in key_list:
+                if value in p_data.keys():
+                    lower_dictionary[value] = p_data[value]
+
+        except KeyError:
+            pass
+
+        upper_dictionary[name] = lower_dictionary
+
+    return upper_dictionary
 
 '''function for converting dates into concatenated written time periods'''
 def concatenate_dates(date):
-    today = datetime.datetime(2019, 2,
-                              4)  # this needs to be the date the report is being discussed at BICC. Python date format (YYYY,MM,DD)
+    today = datetime.datetime(2019, 2, 4)  # this needs to be the date the report is being discussed at BICC. Python date format (YYYY,MM,DD)
     if date != None:
         a = (date - today.date()).days
         year = 365
@@ -155,119 +163,83 @@ def concatenate_dates(date):
     else:
         return ('None')
 
-
 '''function for calculating if confidence has increased decreased'''
-def up_or_down(name, dict_1, dict_2):
-    conf_1 = dict_1[name][0][1]
-    # print(conf_1)
-    try:
-        conf_2 = dict_2[name][0][1]
-        # print(conf_2)
-        if conf_1 == conf_2:
-            return ('Change', int(0))
-        elif conf_1 != conf_2:
-            if conf_2 == 'Green':
-                if conf_1 != 'Amber/Green':
-                    return ('Change', int(-1))
-            elif conf_2 == 'Amber/Green':
-                if conf_1 == 'Green':
-                    return ('Change', int(1))
-                else:
-                    return ('Change', int(-1))
-            elif conf_2 == 'Amber':
-                if conf_1 == 'Green':
-                    return ('Change', int(1))
-                elif conf_1 == 'Amber/Green':
-                    return ('Change', int(1))
-                else:
-                    return ('Change', int(-1))
-            elif conf_2 == 'Amber/Red':
-                if conf_1 == 'Red':
-                    return ('Change', int(-1))
-                else:
-                    return ('Change', int(1))
+def up_or_down(latest_dca, last_dca):
+
+    if latest_dca == last_dca:
+        return (int(0))
+    elif latest_dca != last_dca:
+        if last_dca == 'Green':
+            if latest_dca != 'Amber/Green':
+                return (int(-1))
+        elif last_dca == 'Amber/Green':
+            if latest_dca == 'Green':
+                return (int(1))
             else:
-                return ('Change', int(1))
-    except KeyError:
-        return ('Change', 'NEW')
-
-
-'''function for list/dictionary for current quarter'''
-def making_dict(names):
-    d = {}
-    for x in names:
-        be = key_of_interest(x, data_current_quarter, to_capture_current_quarter)
-        d[x] = be
-    return d
-
+                return (int(-1))
+        elif last_dca == 'Amber':
+            if latest_dca == 'Green':
+                return (int(1))
+            elif latest_dca == 'Amber/Green':
+                return (int(1))
+            else:
+                return (int(-1))
+        elif last_dca == 'Amber/Red':
+            if latest_dca == 'Red':
+                return (int(-1))
+            else:
+                return (int(1))
+        else:
+            return (int(1))
 
 '''function for adding concatenated word strings to dictionary.
 note probably don't need the above function now, but can tidy up later'''
-def adding_con(d, d2):
-    new_dic = {}
-    for x in d:
-        #print(x)
-        be = key_of_interest(x, data_current_quarter, to_capture_current_quarter)
-        lis = []
-        for i in range(1, 5):
-            try:
-                y = concatenate_dates(d[x][i][1])
-            except TypeError:
-                y = 'None'
-            b = (d[x][i][0], y)
-            # print(b)
-            lis.append(b)
-        e = be + lis
-        lis_2 = []
-        con = up_or_down(x, d, d2)
-        lis_2.append(con)
-        f = e + lis_2
-        new_dic[x] = f
-    return new_dic
+def final_dict(dict_one, dict_two, con_list, dca_key):
+    upper_dict = {}
 
+    for name in dict_one:
+        lower_dict = {}
+        p_dict_one = dict_one[name]
+        for key in p_dict_one:
+            if key in con_list:
+                try:
+                    lower_dict[key] = concatenate_dates(p_dict_one[key])
+                except TypeError:
+                    lower_dict[key] = 'check data'
+            else:
+                lower_dict[key] = p_dict_one[key]
 
-'''function for list/dictionary for previous quarter'''
-def making_dict_lq(names):
-    d2 = {}
-    for x in names:
         try:
-            be = key_of_interest(x, data_previous_quarter, to_capture_previous_quarter)
-            d2[x] = be
+            lower_dict['Change'] = up_or_down(p_dict_one[dca_key], dict_two[name][dca_key])
         except KeyError:
-            pass
-    return d2
+            lower_dict['Change'] = 'NEW'
 
+        upper_dict[name] = lower_dict
+
+    return upper_dict
 
 '''function that places all information into the summary dashboard sheet'''
-def placing_excel(d, d2):
-    # loop through list/dictionary and place in correct place in DASHBOARD worksheet
+def placing_excel(dict_one, dict_two):
 
     for row_num in range(2, ws.max_row + 1):
         project_name = ws.cell(row=row_num, column=3).value
         print(project_name)
-        if project_name in d:
-            ws.cell(row=row_num, column=4).value = d[project_name][12][1]
-            ws.cell(row=row_num, column=6).value = d[project_name][17][1]
-            ws.cell(row=row_num, column=7).value = d[project_name][0][1]
-            ws.cell(row=row_num, column=8).value = d[project_name][13][1]
-            ws.cell(row=row_num, column=9).value = d[project_name][8][1]
-            ws.cell(row=row_num, column=10).value = d[project_name][14][1]
-            ws.cell(row=row_num, column=11).value = d[project_name][15][1]
-            ws.cell(row=row_num, column=12).value = d[project_name][7][1]
-            ws.cell(row=row_num, column=13).value = d[project_name][4][1]
-            ws.cell(row=row_num, column=14).value = d[project_name][5][1]
-            # dash_sheet.cell(row=row_num, column=27).value = d[project_name][9][1]
-            # dash_sheet.cell(row=row_num, column=28).value = d[project_name][1][1]
-            # dash_sheet.cell(row=row_num, column=33).value = d[project_name][2][1]
-            # dash_sheet.cell(row=row_num, column=18).value = d[project_name][15][1]
-            # dash_sheet.cell(row=row_num, column=23).value = d[project_name][16][1]
-            # dash_sheet.cell(row=row_num, column=32).value = d[project_name][13][1]
-            # dash_sheet.cell(row=row_num, column=37).value = d[project_name][14][1]
+        if project_name in dict_one:
+            ws.cell(row=row_num, column=4).value = dict_one[project_name]['Total Forecast']
+            ws.cell(row=row_num, column=6).value = dict_one[project_name]['Change']
+            ws.cell(row=row_num, column=7).value = dict_one[project_name]['Departmental DCA']
+            ws.cell(row=row_num, column=8).value = dict_one[project_name]['GMPP - IPA DCA']
+            ws.cell(row=row_num, column=9).value = dict_one[project_name]['BICC approval point']
+            ws.cell(row=row_num, column=10).value = dict_one[project_name]['Project MM20 Forecast - Actual']
+            ws.cell(row=row_num, column=11).value = dict_one[project_name]['Project MM21 Forecast - Actual']
+            ws.cell(row=row_num, column=12).value = dict_one[project_name]['SRO Finance confidence']
+            ws.cell(row=row_num, column=13).value = dict_one[project_name]['Last time at BICC']
+            ws.cell(row=row_num, column=14).value = dict_one[project_name]['Next at BICC']
 
     for row_num in range(2, ws.max_row + 1):
         project_name = ws.cell(row=row_num, column=3).value
-        if project_name in d2:
-            ws.cell(row=row_num, column=5).value = d2[project_name][0][1]
+        if project_name in dict_two:
+            ws.cell(row=row_num, column=5).value = dict_two[project_name]['Departmental DCA']
 
     # Highlight cells that contain RAG text, with background and text the same colour. column E.
     ag_text = Font(color="00a5b700")
@@ -392,38 +364,39 @@ def placing_excel(d, d2):
 
 
 '''keys of interest for current quarter'''
-to_capture_current_quarter = ['Total Forecast', 'Departmental DCA', 'GMPP - IPA DCA', 'BICC approval point',
-                              'Project Lifecycle Stage', 'Project MM20 Forecast - Actual',
-                              'Project MM21 Forecast - Actual',
-                              'SRO Finance confidence', 'Overall Resource DCA - Now',
-                              'Overall Resource DCA - Future', 'SRO Benefits RAG', 'Last time at BICC', 'Next at BICC']
+dash_keys = ['Total Forecast', 'Departmental DCA', 'GMPP - IPA DCA', 'BICC approval point',
+            'Project Lifecycle Stage', 'Project MM20 Forecast - Actual',
+            'Project MM21 Forecast - Actual', 'SRO Finance confidence', 'Last time at BICC', 'Next at BICC']
 
 '''key of interest for previous quarter'''
-to_capture_previous_quarter = ['Departmental DCA']
+dash_keys_previous_quarter = ['Departmental DCA']
+
+keys_to_concatenate = ['Project MM20 Forecast - Actual', 'Project MM21 Forecast - Actual', 'Last time at BICC',
+                       'Next at BICC']
 
 # 1) Provide file path to empty dashboard document
 wb = load_workbook(
-    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q3_2018\\dashboard master_Q3_1819.xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\dashboard master_Q4_1819.xlsx')
 ws = wb.active
 
 # 2) Provide file path to master data sets
-data_current_quarter = project_data_from_master(
-    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\merged_master_testing.xlsx')
-data_previous_quarter = project_data_from_master(
-    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_2_2018.xlsx')
+data_one = project_data_from_master(
+    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')
+data_two = project_data_from_master(
+    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')
 
 '''get list of project names'''
-names = list(data_current_quarter.keys())
-# names = ['A303 Amesbury to Berwick Down']   # can be useful for checking specific projects/the programme so leaving for now
+p_names = list(data_one.keys())
+#names = ['Digital Railway'] # can be useful for checking specific projects/the programme so leaving for now
 
 '''creating mini dictionaries for the final command'''
-d = making_dict(names)
-d2 = making_dict_lq(names)
-d3 = adding_con(d, d2)
+latest_q_dict = inital_dict(p_names, data_one, dash_keys)
+last_q_dict = inital_dict(p_names, data_two, dash_keys_previous_quarter)
+merged_dict = final_dict(latest_q_dict, last_q_dict, keys_to_concatenate, 'Departmental DCA')
 
 '''command for running the programme'''
-wb = placing_excel(d3, d2)
+wb = placing_excel(merged_dict, last_q_dict)
 
 # 3) provide file path and specific name of output file.
 wb.save(
-    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q3_2018\\testing_dashboard_Q3_2018_19.xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\testing_dashboard_Q4_2018_19.xlsx')
