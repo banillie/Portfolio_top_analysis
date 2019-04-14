@@ -16,6 +16,7 @@ Instructions:
 1) provide path to dashboard master
 2) provide path to master data sets
 3) provide path and specify file name for output document
+4) need to change the date in the concatenate function
 
 Supplementary instructions:
 These things need to be done to check and assure the data going into the dashboard. Use the other programmes available
@@ -60,9 +61,45 @@ def inital_dict(project_name, data, key_list):
 
     return upper_dictionary
 
+def all_milestone_data(master_data):
+    upper_dict = {}
+
+    for name in master_data:
+        p_data = master_data[name]
+        lower_dict = {}
+        for i in range(1, 50):
+            try:
+                lower_dict[p_data['Approval MM' + str(i)]] = p_data['Approval MM' + str(i) + ' Forecast / Actual']
+            except KeyError:
+                lower_dict[p_data['Approval MM' + str(i)]] = p_data['Approval MM' + str(i) + ' Forecast - Actual']
+
+            lower_dict[p_data['Assurance MM' + str(i)]] = p_data['Assurance MM' + str(i) + ' Forecast - Actual']
+
+        for i in range(18, 67):
+            lower_dict[p_data['Project MM' + str(i)]] = p_data['Project MM' + str(i) + ' Forecast - Actual']
+
+        upper_dict[name] = lower_dict
+
+    return upper_dict
+
+def add_sop_pend_data(m_data, dict):
+
+    for name in dict:
+        try:
+            dict[name]['Start of Operation'] = m_data[name]['Start of Operation']
+        except KeyError:
+            dict[name]['Start of Operation'] = None
+        try:
+            dict[name]['Project - End Date'] = m_data[name]['Project - End Date']
+        except KeyError:
+            dict[name]['Project - End Date'] = None
+
+    return dict
+
+
 '''function for converting dates into concatenated written time periods'''
 def concatenate_dates(date):
-    today = datetime.datetime(2019, 2, 4)  # this needs to be the date the report is being discussed at BICC. Python date format (YYYY,MM,DD)
+    today = datetime.datetime(2019, 5, 13)  # this needs to be the date the report is being discussed at BICC. Python date format (YYYY,MM,DD)
     if date != None:
         a = (date - today.date()).days
         year = 365
@@ -230,8 +267,8 @@ def placing_excel(dict_one, dict_two):
             ws.cell(row=row_num, column=7).value = dict_one[project_name]['Departmental DCA']
             ws.cell(row=row_num, column=8).value = dict_one[project_name]['GMPP - IPA DCA']
             ws.cell(row=row_num, column=9).value = dict_one[project_name]['BICC approval point']
-            ws.cell(row=row_num, column=10).value = dict_one[project_name]['Project MM20 Forecast - Actual']
-            ws.cell(row=row_num, column=11).value = dict_one[project_name]['Project MM21 Forecast - Actual']
+            ws.cell(row=row_num, column=10).value = dict_one[project_name]['Start of Operation']
+            ws.cell(row=row_num, column=11).value = dict_one[project_name]['Project - End Date']
             ws.cell(row=row_num, column=12).value = dict_one[project_name]['SRO Finance confidence']
             ws.cell(row=row_num, column=13).value = dict_one[project_name]['Last time at BICC']
             ws.cell(row=row_num, column=14).value = dict_one[project_name]['Next at BICC']
@@ -365,13 +402,12 @@ def placing_excel(dict_one, dict_two):
 
 '''keys of interest for current quarter'''
 dash_keys = ['Total Forecast', 'Departmental DCA', 'GMPP - IPA DCA', 'BICC approval point',
-            'Project Lifecycle Stage', 'Project MM20 Forecast - Actual',
-            'Project MM21 Forecast - Actual', 'SRO Finance confidence', 'Last time at BICC', 'Next at BICC']
+            'Project Lifecycle Stage', 'SRO Finance confidence', 'Last time at BICC', 'Next at BICC']
 
 '''key of interest for previous quarter'''
 dash_keys_previous_quarter = ['Departmental DCA']
 
-keys_to_concatenate = ['Project MM20 Forecast - Actual', 'Project MM21 Forecast - Actual', 'Last time at BICC',
+keys_to_concatenate = ['Start of Operation', 'Project - End Date', 'Last time at BICC',
                        'Next at BICC']
 
 # 1) Provide file path to empty dashboard document
@@ -392,7 +428,12 @@ p_names = list(data_one.keys())
 '''creating mini dictionaries for the final command'''
 latest_q_dict = inital_dict(p_names, data_one, dash_keys)
 last_q_dict = inital_dict(p_names, data_two, dash_keys_previous_quarter)
-merged_dict = final_dict(latest_q_dict, last_q_dict, keys_to_concatenate, 'Departmental DCA')
+
+'''handling of milestones'''
+m_data = all_milestone_data(data_one)
+latest_q_dict_2 = add_sop_pend_data(m_data, latest_q_dict)
+
+merged_dict = final_dict(latest_q_dict_2, last_q_dict, keys_to_concatenate, 'Departmental DCA')
 
 '''command for running the programme'''
 wb = placing_excel(merged_dict, last_q_dict)
