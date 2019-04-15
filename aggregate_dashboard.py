@@ -96,7 +96,6 @@ def add_sop_pend_data(m_data, dict):
 
     return dict
 
-
 '''function for converting dates into concatenated written time periods'''
 def concatenate_dates(date):
     today = bicc_date
