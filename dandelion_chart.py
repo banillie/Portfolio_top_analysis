@@ -6,11 +6,12 @@ To run the programme you need to specify the file path to master dandelion chart
 path and name for output file.
 
 Note - at the moment I have not been able to understand and fix the dandelion bubble chart being removed from output
-document. This means that the data placed into the output document, needs to be cut and paste into the dandelion master
-and then saved as the {quarter info} dandelion chart. No ideal but it is the process for now.
+document when saved as xlms. This means that the data placed into the output document, needs to be cut and paste into
+the dandelion master and then saved as the {quarter info} dandelion chart. Not ideal but it is the process for now.
 
 Note - project names need to match those in the master data (other data will not be released). Formulas for adding
-totals need to be placed into the master file. Some projects require manual edits to their whole life costs.
+totals need to be placed into the master file. Some projects/groups require manual edits to their whole life costs.
+This are highlighted in yellow in the master.
 '''
 
 from openpyxl import load_workbook
@@ -30,8 +31,7 @@ def create_dandelion(wb_name, master_data):
 
 
 '''1) Specify file path to master dandelion document'''
-dandelion = load_workbook('C:\\Users\\Standalone\\Will\\masters folder\\dandilion_docs\\Q4_1819_dandelion'
-                          '_graph_master.xlsm')
+dandelion = load_workbook('C:\\Users\\Standalone\\Will\\masters folder\\dandilion_docs\\Q4_1819_dandelion_master.xlsm')
 
 '''2) Specify file path to master data - usually latest quarter'''
 data = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')
