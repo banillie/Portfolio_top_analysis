@@ -15,8 +15,8 @@ output document:
 Instructions:
 1) provide path to dashboard master
 2) provide path to master data sets
-3) provide path and specify file name for output document
-4) need to change the date in the concatenate function
+3) change bicc_date variable
+4) provide path and specify file name for output document
 
 Supplementary instructions:
 These things need to be done to check and assure the data going into the dashboard. Use the other programmes available
@@ -99,7 +99,7 @@ def add_sop_pend_data(m_data, dict):
 
 '''function for converting dates into concatenated written time periods'''
 def concatenate_dates(date):
-    today = datetime.datetime(2019, 5, 13)  # this needs to be the date the report is being discussed at BICC. Python date format (YYYY,MM,DD)
+    today = bicc_date
     if date != None:
         a = (date - today.date()).days
         year = 365
@@ -410,34 +410,31 @@ dash_keys_previous_quarter = ['Departmental DCA']
 keys_to_concatenate = ['Start of Operation', 'Project - End Date', 'Last time at BICC',
                        'Next at BICC']
 
-# 1) Provide file path to empty dashboard document
+'''1) Provide file path to empty dashboard document'''
 wb = load_workbook(
     'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\dashboard master_Q4_1819.xlsx')
 ws = wb.active
 
-# 2) Provide file path to master data sets
+'''2) Provide file path to master data sets'''
 data_one = project_data_from_master(
     'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')
 data_two = project_data_from_master(
     'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')
 
-'''get list of project names'''
 p_names = list(data_one.keys())
-#names = ['Digital Railway'] # can be useful for checking specific projects/the programme so leaving for now
+#p_names = ['Digital Railway'] # can be useful for checking specific projects/the programme so leaving for now
 
-'''creating mini dictionaries for the final command'''
+'''3) Specify data of bicc that is discussing the report. NOTE: Python date format is (YYYY,MM,DD)'''
+bicc_date = datetime.datetime(2019, 5, 13)
+
+
 latest_q_dict = inital_dict(p_names, data_one, dash_keys)
 last_q_dict = inital_dict(p_names, data_two, dash_keys_previous_quarter)
-
-'''handling of milestones'''
 m_data = all_milestone_data(data_one)
 latest_q_dict_2 = add_sop_pend_data(m_data, latest_q_dict)
-
 merged_dict = final_dict(latest_q_dict_2, last_q_dict, keys_to_concatenate, 'Departmental DCA')
-
-'''command for running the programme'''
 wb = placing_excel(merged_dict, last_q_dict)
 
-# 3) provide file path and specific name of output file.
+'''4) provide file path and specific name of output file.'''
 wb.save(
     'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\testing_dashboard_Q4_2018_19.xlsx')
