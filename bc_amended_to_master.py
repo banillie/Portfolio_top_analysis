@@ -59,13 +59,14 @@ def put_into_master(dictionary, worksheet):
 
 '''1) Specify the file path to the bc_stage_from_master document'''
 wb_dates = load_workbook(
-    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q3_2018\\Q3_1819_bc_data_check (2).xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\'
+    'Q4_1819_bc_data_for_ref_testing.xlsx')
 ws_dates = wb_dates.active
 data = put_data_in_dictionary(ws_dates)
 
 '''2) Specify the file path to the quarter data master to be changed'''
 wb = load_workbook(
-    'C:\\Users\\Standalone\\Will\\masters folder\\master_3_2018.xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018_wip.xlsx')
 ws = wb.active
 
 amended_master = put_into_master(data, ws)
@@ -77,5 +78,5 @@ programme. If you wanted to create a document that doesn't overwrite the master 
 a different filename (such as 'test'). However, you will need to save all changes into/overwrite the master at some 
 point - as it is the sole source of persistent final data.
 '''
-amended_master.save('C:\\Users\\Standalone\\Will\\masters folder\\master_3_2018.xlsx')
+amended_master.save('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018_wip.xlsx')
 

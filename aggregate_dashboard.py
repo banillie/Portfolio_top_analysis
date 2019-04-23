@@ -25,8 +25,7 @@ for undertaking these tasks.
 bc_amended_to_master programmes. #TODO check if process needs to be amended for Q1 19/20
 2) Check the last at / next at BICC project data is correct. This is done via the bicc_dates_from_master and
 bicc_dates_amended_to_master programmes. #TODO check if process needs to be amended for Q1 19/20
-3) Make sure IPA DCA ratings are correct. This is done via the gmpp_dca_information and gmpp_dca_to_dft_master
-programmes. #TODO need to check if these programmes needs to be amended for Q1 19/20
+
 
 Note some manual adjustments may need to be made to:
 1) Project WLC totals e.g. Hs2 Phases
@@ -264,7 +263,7 @@ def placing_excel(dict_one, dict_two):
             ws.cell(row=row_num, column=4).value = dict_one[project_name]['Total Forecast']
             ws.cell(row=row_num, column=6).value = dict_one[project_name]['Change']
             ws.cell(row=row_num, column=7).value = dict_one[project_name]['Departmental DCA']
-            ws.cell(row=row_num, column=8).value = dict_one[project_name]['GMPP - IPA DCA']
+            ws.cell(row=row_num, column=8).value = dict_one[project_name]['GMPP - IPA DCA last quarter']
             ws.cell(row=row_num, column=9).value = dict_one[project_name]['BICC approval point']
             ws.cell(row=row_num, column=10).value = dict_one[project_name]['Start of Operation']
             ws.cell(row=row_num, column=11).value = dict_one[project_name]['Project - End Date']
@@ -400,8 +399,9 @@ def placing_excel(dict_one, dict_two):
 
 
 '''keys of interest for current quarter'''
-dash_keys = ['Total Forecast', 'Departmental DCA', 'GMPP - IPA DCA', 'BICC approval point',
-            'Project Lifecycle Stage', 'SRO Finance confidence', 'Last time at BICC', 'Next at BICC']
+dash_keys = ['Total Forecast', 'Departmental DCA', 'BICC approval point',
+            'Project Lifecycle Stage', 'SRO Finance confidence', 'Last time at BICC', 'Next at BICC',
+             'GMPP - IPA DCA last quarter']
 
 '''key of interest for previous quarter'''
 dash_keys_previous_quarter = ['Departmental DCA']
@@ -416,7 +416,7 @@ ws = wb.active
 
 '''2) Provide file path to master data sets'''
 data_one = project_data_from_master(
-    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018_wip.xlsx')
 data_two = project_data_from_master(
     'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')
 

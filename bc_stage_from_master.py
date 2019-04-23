@@ -8,7 +8,7 @@ then leave blank). The workbook should then be saved.
 The programme will highlight in red text any changes between the two quarters. This helps to identify
 changes between quarters - so you can check if the expected changes have or haven't be reported.
 
-To run the programme the correct file paths need to be provided - as highlighted in red below. 
+To run the programme the correct file paths need to be provided.
 '''
 
 from openpyxl import Workbook
