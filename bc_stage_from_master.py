@@ -54,9 +54,9 @@ def data_return(project_list, data_key, list_of_dictionaries):
 
 '''1) Specify path to master data information - usually for latest and last quarter'''
 one = project_data_from_master(
-    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018_wip.xlsx')
 two = project_data_from_master(
-    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_2_2018.xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')
 
 dictionary_list = [two, one]
 
@@ -71,5 +71,5 @@ run = data_return(overall_list, data_interest, dictionary_list)
 
 '''2) Specify file path and name of document to be saved. I suggest it is {last q info}_bc_stage_from_master'''
 run.save(
-    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q3_2018\\test.xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\Q4_1819_bc_stage_from_master.xlsx')
 

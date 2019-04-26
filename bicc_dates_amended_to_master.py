@@ -56,8 +56,11 @@ def put_into_master(dictionary, worksheet):
             if dictionary[project_name]['Manual amend: Last @ BICC'] == None:
                 pass
             else:
-                ws.cell(row=88, column=col_num).value = dictionary[project_name]['Manual amend: Last @ BICC']
-                ws.cell(row=88, column=col_num).font = red_text
+                for row in range(2, worksheet.max_row + 1):
+                    key = ws.cell(row=row, column=1).value
+                    if 'Last time at BICC' in key:
+                        ws.cell(row=row, column=col_num).value = dictionary[project_name]['Manual amend: Last @ BICC']
+                        ws.cell(row=row, column=col_num).font = red_text
 
     for col_num in range(2, worksheet.max_column + 1):
         project_name = ws.cell(row=1, column=col_num).value
@@ -65,18 +68,21 @@ def put_into_master(dictionary, worksheet):
             if dictionary[project_name]['Manual amend: Next @ BICC'] == None:
                 pass
             else:
-                ws.cell(row=89, column=col_num).value = dictionary[project_name]['Manual amend: Next @ BICC']
-                ws.cell(row=89, column=col_num).font = red_text
+                for row in range(2, worksheet.max_row + 1):
+                    key = ws.cell(row=row, column=1).value
+                    if 'Next at BICC' in key:
+                        ws.cell(row=row, column=col_num).value = dictionary[project_name]['Manual amend: Next @ BICC']
+                        ws.cell(row=row, column=col_num).font = red_text
     return wb
 
 '''1) Specify file path to dates at bicc checker document'''
-wb_dates = load_workbook('C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q3_2018\\'
-                         'Q3_1819_dates_at_bicc_checker_in.xlsx')
+wb_dates = load_workbook('C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\'
+                         'q4_1819_bicc_dates_check.xlsx')
 ws_dates = wb_dates.active
 data = put_data_in_dictionary(ws_dates)
 
 '''2) Specify file path to master spreadsheet to be changes'''
-wb = load_workbook('C:\\Users\\Standalone\\Will\\masters folder\\master_3_2018.xlsx')
+wb = load_workbook('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')
 ws = wb.active
 
 amended_master = put_into_master(data, ws)
@@ -89,4 +95,4 @@ a different filename (such as test). However, you will need to save all changes 
 - as it is the solen source of persistent final data.
 '''
 
-amended_master.save('C:\\Users\\Standalone\\Will\\masters folder\\master_3_2018.xlsx')
+amended_master.save('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')

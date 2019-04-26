@@ -89,9 +89,9 @@ def add_sop_pend_data(m_data, dict):
         except KeyError:
             dict[name]['Start of Operation'] = None
         try:
-            dict[name]['Project - End Date'] = m_data[name]['Project - End Date']
+            dict[name]['Project End Date'] = m_data[name]['Project End Date']
         except KeyError:
-            dict[name]['Project - End Date'] = None
+            dict[name]['Project End Date'] = None
 
     return dict
 
@@ -266,7 +266,7 @@ def placing_excel(dict_one, dict_two):
             ws.cell(row=row_num, column=8).value = dict_one[project_name]['GMPP - IPA DCA last quarter']
             ws.cell(row=row_num, column=9).value = dict_one[project_name]['BICC approval point']
             ws.cell(row=row_num, column=10).value = dict_one[project_name]['Start of Operation']
-            ws.cell(row=row_num, column=11).value = dict_one[project_name]['Project - End Date']
+            ws.cell(row=row_num, column=11).value = dict_one[project_name]['Project End Date']
             ws.cell(row=row_num, column=12).value = dict_one[project_name]['SRO Finance confidence']
             ws.cell(row=row_num, column=13).value = dict_one[project_name]['Last time at BICC']
             ws.cell(row=row_num, column=14).value = dict_one[project_name]['Next at BICC']
@@ -406,7 +406,7 @@ dash_keys = ['Total Forecast', 'Departmental DCA', 'BICC approval point',
 '''key of interest for previous quarter'''
 dash_keys_previous_quarter = ['Departmental DCA']
 
-keys_to_concatenate = ['Start of Operation', 'Project - End Date', 'Last time at BICC',
+keys_to_concatenate = ['Start of Operation', 'Project End Date', 'Last time at BICC',
                        'Next at BICC']
 
 '''1) Provide file path to empty dashboard document'''
@@ -416,7 +416,7 @@ ws = wb.active
 
 '''2) Provide file path to master data sets'''
 data_one = project_data_from_master(
-    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018_wip.xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')
 data_two = project_data_from_master(
     'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')
 
@@ -436,4 +436,4 @@ wb = placing_excel(merged_dict, last_q_dict)
 
 '''4) provide file path and specific name of output file.'''
 wb.save(
-    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\testing_dashboard_Q4_2018_19.xlsx')
+    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\dashboard_Q4_2018_19.xlsx')

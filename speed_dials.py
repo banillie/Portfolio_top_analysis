@@ -115,7 +115,7 @@ def printing_word(m_dict):
     sub.add_run(sub_head).bold = True
     down = 0
     for name in m_dict:
-        # print(name, m_dict[name])
+        #print(name, m_dict[name])
         if m_dict[name]['Change'] == -4:
             p = doc.add_paragraph()
             a = m_dict[name]['DCA']
@@ -294,12 +294,12 @@ def calculating_dials_other(dictionary):
 
 # 1) Specify file path to core data sets of interest.
 
-current_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\core data\\merged_master_'
-                                          'testing.xlsx')
+current_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')
 
-last_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_2_2018.xlsx')
+last_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')
 
 current_Q_list = get_project_names(current_Q_dict)
+#current_Q_list = ['High Speed Rail Programme (HS2)']
 
 sro_dca = create_dict('Departmental DCA', current_Q_dict, last_Q_dict)
 finance_dca = create_dict('SRO Finance confidence', current_Q_dict, last_Q_dict)
@@ -321,7 +321,7 @@ resource = printing_word(resource_dca)
 benefits = printing_word(benefits_dca)
 
 # 2) specify file path and file name for output MS word documents.
-overall.save('C:\\Users\\Standalone\\Will\\Q3_1718_overall_dca.docx')
-finance.save('C:\\Users\\Standalone\\Will\\Q3_1819_finance_dca.docx')
-resource.save('C:\\Users\\Standalone\\Will\\Q3_1819_resource_dca.docx')
-benefits.save('C:\\Users\\Standalone\\Will\\Q3_1819_benefits_dca.docx')
+overall.save('C:\\Users\\Standalone\\Will\\Q4_1819_overall_dca.docx')
+finance.save('C:\\Users\\Standalone\\Will\\Q4_1819_finance_dca.docx')
+resource.save('C:\\Users\\Standalone\\Will\\Q4_1819_resource_dca.docx')
+benefits.save('C:\\Users\\Standalone\\Will\\Q4_1819_benefits_dca.docx')

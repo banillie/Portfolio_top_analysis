@@ -60,7 +60,7 @@ def put_into_master(dictionary, worksheet):
 '''1) Specify the file path to the bc_stage_from_master document'''
 wb_dates = load_workbook(
     'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\'
-    'Q4_1819_bc_data_for_ref_testing.xlsx')
+    'Q4_1819_bc_stage_from_master.xlsx')
 ws_dates = wb_dates.active
 data = put_data_in_dictionary(ws_dates)
 
