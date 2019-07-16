@@ -31,6 +31,9 @@ Note some manual adjustments may need to be made to:
 1) Project WLC totals e.g. Hs2 Phases
 2) The last/next at BICC specification. e.g. Hs2 Prog should be changed to 'often'
 
+
+NOTE - code should ideally be refactored in line with latest structure as sort of hacked together at mo to accommodate
+the change in data keys (i.e. new template).
 '''
 
 from openpyxl import load_workbook
@@ -60,22 +63,38 @@ def inital_dict(project_name, data, key_list):
 
     return upper_dictionary
 
-def all_milestone_data(master_data):
+def all_milestone_data_bulk(project_list, master_data):
     upper_dict = {}
 
-    for name in master_data:
-        p_data = master_data[name]
-        lower_dict = {}
-        for i in range(1, 50):
-            try:
-                lower_dict[p_data['Approval MM' + str(i)]] = p_data['Approval MM' + str(i) + ' Forecast / Actual']
-            except KeyError:
-                lower_dict[p_data['Approval MM' + str(i)]] = p_data['Approval MM' + str(i) + ' Forecast - Actual']
+    for name in project_list:
+        try:
+            p_data = master_data[name]
+            lower_dict = {}
+            for i in range(1, 50):
+                try:
+                    try:
+                        lower_dict[p_data['Approval MM' + str(i)]] = \
+                            {p_data['Approval MM' + str(i) + ' Forecast / Actual']: p_data[
+                                'Approval MM' + str(i) + ' Notes']}
+                    except KeyError:
+                        lower_dict[p_data['Approval MM' + str(i)]] = \
+                            {p_data['Approval MM' + str(i) + ' Forecast - Actual']: p_data[
+                                'Approval MM' + str(i) + ' Notes']}
 
-            lower_dict[p_data['Assurance MM' + str(i)]] = p_data['Assurance MM' + str(i) + ' Forecast - Actual']
+                    lower_dict[p_data['Assurance MM' + str(i)]] = \
+                        {p_data['Assurance MM' + str(i) + ' Forecast - Actual']: p_data[
+                                'Assurance MM' + str(i) + ' Notes']}
+                except KeyError:
+                    pass
 
-        for i in range(18, 67):
-            lower_dict[p_data['Project MM' + str(i)]] = p_data['Project MM' + str(i) + ' Forecast - Actual']
+            for i in range(18, 67):
+                try:
+                    lower_dict[p_data['Project MM' + str(i)]] = \
+                        {p_data['Project MM' + str(i) + ' Forecast - Actual']: p_data['Project MM' + str(i) + ' Notes']}
+                except KeyError:
+                    pass
+        except KeyError:
+            lower_dict = {}
 
         upper_dict[name] = lower_dict
 
@@ -83,14 +102,16 @@ def all_milestone_data(master_data):
 
 def add_sop_pend_data(m_data, dict):
 
-    for name in dict:
+    for name in dict.keys():
         try:
             dict[name]['Start of Operation'] = m_data[name]['Start of Operation']
         except KeyError:
+            print(name + ' no sop date')
             dict[name]['Start of Operation'] = None
         try:
             dict[name]['Project End Date'] = m_data[name]['Project End Date']
         except KeyError:
+            print(name + ' no proj end date')
             dict[name]['Project End Date'] = None
 
     return dict
@@ -240,7 +261,10 @@ def final_dict(dict_one, dict_two, con_list, dca_key):
                 try:
                     lower_dict[key] = concatenate_dates(p_dict_one[key])
                 except TypeError:
-                    lower_dict[key] = 'check data'
+                    try:
+                        lower_dict[key] = concatenate_dates(tuple(p_dict_one[key])[0])
+                    except TypeError:
+                        lower_dict[key] = 'check data'
             else:
                 lower_dict[key] = p_dict_one[key]
 
@@ -397,7 +421,6 @@ def placing_excel(dict_one, dict_two):
             ws.cell(row=row_num, column=14).font = ft
     return wb
 
-
 '''keys of interest for current quarter'''
 dash_keys = ['Total Forecast', 'Departmental DCA', 'BICC approval point',
             'Project Lifecycle Stage', 'SRO Finance confidence', 'Last time at BICC', 'Next at BICC',
@@ -411,29 +434,29 @@ keys_to_concatenate = ['Start of Operation', 'Project End Date', 'Last time at B
 
 '''1) Provide file path to empty dashboard document'''
 wb = load_workbook(
-    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\dashboard master_Q4_1819.xlsx')
+    'C:\\Users\\Standalone\\general\\masters folder\\summary_dashboard_docs\\Q4_2018\\dashboard master_Q4_1819.xlsx')
 ws = wb.active
 
 '''2) Provide file path to master data sets'''
-data_one = project_data_from_master(
-    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')
-data_two = project_data_from_master(
-    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')
+q1_1920 = project_data_from_master(
+    'C:\\Users\\Standalone\\general\\masters folder\\core data\\master_1_2019_draft.xlsx')
+q4_1819 = project_data_from_master(
+    'C:\\Users\\Standalone\\general\\masters folder\\core data\\master_4_2018.xlsx')
 
-p_names = list(data_one.keys())
+p_names = list(q1_1920.keys())
 #p_names = ['Digital Railway'] # can be useful for checking specific projects/the programme so leaving for now
 
 '''3) Specify data of bicc that is discussing the report. NOTE: Python date format is (YYYY,MM,DD)'''
-bicc_date = datetime.datetime(2019, 5, 13)
+bicc_date = datetime.datetime(2019, 9, 9)
 
 
-latest_q_dict = inital_dict(p_names, data_one, dash_keys)
-last_q_dict = inital_dict(p_names, data_two, dash_keys_previous_quarter)
-m_data = all_milestone_data(data_one)
+latest_q_dict = inital_dict(p_names, q1_1920, dash_keys)
+last_q_dict = inital_dict(p_names, q4_1819, dash_keys_previous_quarter)
+m_data = all_milestone_data_bulk(p_names, q1_1920)
 latest_q_dict_2 = add_sop_pend_data(m_data, latest_q_dict)
 merged_dict = final_dict(latest_q_dict_2, last_q_dict, keys_to_concatenate, 'Departmental DCA')
 wb = placing_excel(merged_dict, last_q_dict)
 
 '''4) provide file path and specific name of output file.'''
 wb.save(
-    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\dashboard_Q4_2018_19.xlsx')
+    'C:\\Users\\Standalone\\general\\masters folder\\summary_dashboard_docs\\Q4_2018\\testing.xlsx')
