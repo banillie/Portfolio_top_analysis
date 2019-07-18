@@ -76,13 +76,13 @@ def put_into_master(dictionary, worksheet):
     return wb
 
 '''1) Specify file path to dates at bicc checker document'''
-wb_dates = load_workbook('C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\'
-                         'q4_1819_bicc_dates_check.xlsx')
+wb_dates = load_workbook('C:\\Users\\Standalone\\general\\masters folder\\summary_dashboard_docs\\Q1_2019\\'
+                         'q1_1920_bicc_dates_check.xlsx')
 ws_dates = wb_dates.active
 data = put_data_in_dictionary(ws_dates)
 
 '''2) Specify file path to master spreadsheet to be changes'''
-wb = load_workbook('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')
+wb = load_workbook('C:\\Users\\Standalone\\general\\masters folder\\core data\\master_1_2019_wip.xlsx')
 ws = wb.active
 
 amended_master = put_into_master(data, ws)
@@ -95,4 +95,4 @@ a different filename (such as test). However, you will need to save all changes 
 - as it is the solen source of persistent final data.
 '''
 
-amended_master.save('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')
+amended_master.save('C:\\Users\\Standalone\\general\\masters folder\\core data\\master_1_2019_wip.xlsx')

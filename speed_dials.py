@@ -294,9 +294,10 @@ def calculating_dials_other(dictionary):
 
 # 1) Specify file path to core data sets of interest.
 
-current_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')
+current_Q_dict = project_data_from_master('C:\\Users\\Standalone\\general\\masters folder\\core data\\'
+                                          'master_1_2019_wip_(18_7_19).xlsx')
 
-last_Q_dict = project_data_from_master('C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')
+last_Q_dict = project_data_from_master('C:\\Users\\Standalone\\general\\masters folder\\core data\\master_4_2018.xlsx')
 
 current_Q_list = get_project_names(current_Q_dict)
 #current_Q_list = ['High Speed Rail Programme (HS2)']
@@ -321,7 +322,7 @@ resource = printing_word(resource_dca)
 benefits = printing_word(benefits_dca)
 
 # 2) specify file path and file name for output MS word documents.
-overall.save('C:\\Users\\Standalone\\Will\\Q4_1819_overall_dca.docx')
-finance.save('C:\\Users\\Standalone\\Will\\Q4_1819_finance_dca.docx')
-resource.save('C:\\Users\\Standalone\\Will\\Q4_1819_resource_dca.docx')
-benefits.save('C:\\Users\\Standalone\\Will\\Q4_1819_benefits_dca.docx')
+overall.save('C:\\Users\\Standalone\\general\\Q1_1920_overall_dca.docx')
+finance.save('C:\\Users\\Standalone\\general\\Q4_1819_finance_dca.docx')
+resource.save('C:\\Users\\Standalone\\general\\Q4_1819_resource_dca.docx')
+benefits.save('C:\\Users\\Standalone\\general\\Q4_1819_benefits_dca.docx')

@@ -67,9 +67,9 @@ def data_return(project_list, data_key_list, one, two):
 '''1) Specify file paths to master data sources - normally latest and last quarter data'''
 
 one = project_data_from_master(
-    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_4_2018.xlsx')  # file path to latest quarter
+    'C:\\Users\\Standalone\\general\\masters folder\\core data\\master_1_2019_wip.xlsx')  # file path to latest quarter
 two = project_data_from_master(
-    'C:\\Users\\Standalone\\Will\\masters folder\\core data\\master_3_2018.xlsx')  # file path to last quarter
+    'C:\\Users\\Standalone\\general\\masters folder\\core data\\master_4_2018.xlsx')  # file path to last quarter
 
 one_list = list(one.keys())
 two_list = list(two.keys())
@@ -81,4 +81,4 @@ run = data_return(overall_list, data_interest, one, two)
 
 '''2) Specify file path and name of document to be saved'''
 run.save(
-    'C:\\Users\\Standalone\\Will\\masters folder\\summary_dashboard_docs\\Q4_2018\\q4_1819_bicc_dates_check.xlsx')
+    'C:\\Users\\Standalone\\general\\masters folder\\summary_dashboard_docs\\Q1_2019\\q1_1920_bicc_dates_check.xlsx')
