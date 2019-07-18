@@ -23,7 +23,6 @@ def get_project_names(dictionary):
         project_name_list.append(x)
     return project_name_list
 
-
 def create_dict(category, dictionary_1, dictionary_2):
     m_dict = {}
     for name in dictionary_1:
@@ -102,7 +101,6 @@ def create_dict(category, dictionary_1, dictionary_2):
                     m_dict[name]['Change'] = 5
 
     return m_dict
-
 
 def printing_word(m_dict):
     doc = docx.Document()
@@ -219,7 +217,6 @@ def printing_word(m_dict):
 
     return doc
 
-
 def calculating_dials_dca(dictionary):
     empty_list = []
     for x in dictionary:
@@ -258,7 +255,6 @@ def calculating_dials_dca(dictionary):
 
     print(result)
 
-
 def calculating_dials_other(dictionary):
     empty_list = []
     for x in dictionary:
@@ -292,7 +288,7 @@ def calculating_dials_other(dictionary):
     print(result)
 
 
-# 1) Specify file path to core data sets of interest.
+'''1) Specify file path to core data sets of interest'''
 
 current_Q_dict = project_data_from_master('C:\\Users\\Standalone\\general\\masters folder\\core data\\'
                                           'master_1_2019_wip_(18_7_19).xlsx')
@@ -321,8 +317,9 @@ finance = printing_word(finance_dca)
 resource = printing_word(resource_dca)
 benefits = printing_word(benefits_dca)
 
-# 2) specify file path and file name for output MS word documents.
+'''2) specify file path and file name for output MS word documents.'''
+
 overall.save('C:\\Users\\Standalone\\general\\Q1_1920_overall_dca.docx')
-finance.save('C:\\Users\\Standalone\\general\\Q4_1819_finance_dca.docx')
-resource.save('C:\\Users\\Standalone\\general\\Q4_1819_resource_dca.docx')
-benefits.save('C:\\Users\\Standalone\\general\\Q4_1819_benefits_dca.docx')
+finance.save('C:\\Users\\Standalone\\general\\Q1_1920_finance_dca.docx')
+resource.save('C:\\Users\\Standalone\\general\\Q1_1920_resource_dca.docx')
+benefits.save('C:\\Users\\Standalone\\general\\Q1_1920_benefits_dca.docx')
